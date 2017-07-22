@@ -111,8 +111,11 @@ int main(int argc, char *argv[])
 
             bf_brace_node *node = pop_brace_node(&top);
             if (node->cell_shift_count != 0) {
-                printf("Loop %d shift count: %d (line %d)\n",
-                        node->index, node->cell_shift_count, node->line);
+                printf("Imbalance in loop %d (line %d): %d extra %s shift%s\n",
+                        node->index, node->line,
+                        node->cell_shift_count,
+                        node->cell_shift_count > 0 ? "right" : "left",
+                        abs(node->cell_shift_count) > 1 ? "s" : "");
             }
             free(node);
         }
