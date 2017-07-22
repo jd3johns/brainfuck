@@ -79,8 +79,7 @@ int main(int argc, char *argv[])
     int line_number = 1;
     bf_brace_node *top = NULL;
 
-    if (argc < 2)
-    {
+    if (argc < 2) {
         fprintf(stderr, "Error: no file given\n");
         ret = -1;
         goto error;
@@ -135,8 +134,7 @@ int main(int argc, char *argv[])
 
 error:
     dealloc_stack(&top);
-    if (fp)
-    {
+    if (fp) {
         fclose(fp);
     }
 
