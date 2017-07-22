@@ -73,12 +73,19 @@ static void dealloc_stack(bf_brace_node **top)
 
 int main(int argc, char *argv[])
 {
-    FILE *fp;
+    FILE *fp = NULL;
     int ret = 0;
     int c = 0;
     int line_number = 1;
-
     bf_brace_node *top = NULL;
+
+    if (argc < 2)
+    {
+        fprintf(stderr, "Error: no file given\n");
+        ret = -1;
+        goto error;
+    }
+
     if (!(fp = fopen(argv[1], "r"))) {
         perror(argv[1]);
         ret = errno;
@@ -98,7 +105,8 @@ int main(int argc, char *argv[])
         else if (strcmp(&c, "]") == 0) {
             if (!top) {
                 fprintf(stderr, "Error: no matching open brace (line %d)\n", line_number);
-                exit(1);
+                ret = -1;
+                goto error;
             }
 
             bf_brace_node *node = pop_brace_node(&top);
@@ -124,6 +132,10 @@ int main(int argc, char *argv[])
 
 error:
     dealloc_stack(&top);
-    fclose(fp);
+    if (fp)
+    {
+        fclose(fp);
+    }
+
     return ret;
 }
